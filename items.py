@@ -123,17 +123,27 @@ class Item:
 amazon_data = {
     "title": "Dell Laptop 14 inches",
     "price": 1400,
-    "description": "this is an awesome laptop!!",
-    "features": "wireless internet connection",
-    "details": "Great one."
+    "description": ["The Dell Inspiron 14 offers a perfect balance between portability and performance. With its sleek aluminum design and ultra-slim profile, it’s ideal for both students and professionals. The 14-inch Full HD display delivers vibrant colors and crisp visuals for work, streaming, or browsing."],
+    "features": "Intel Core i5 12th Gen processor for fast multitasking 8GB DDR4 RAM and 512GB SSD for smooth, reliable performance, Backlit keyboard and fingerprint reader for convenience and security",
+    "details": "Product Dimensions: 12.7 x 8.6 x 0.7 inches, Item Weight: 3.08 pounds, Operating System: Windows 11 Home, Manufacturer: Dell"
 }
-
-# print(amazon_data["title"])
 
 item = Item(amazon_data, amazon_data)
 
-# print(item)
-item.make_prompt("hahaha Manufacturer")
+### Test if details are properly scrubbed:
+print(item.details) # Original Details
+print(item.scrub_details()) # Scrubbed details
 
+
+### Test the scrub() method:
+scrubbed = item.scrub("[,,,this is a great product that escalates the efficiency at work{}   ]")
+print(scrubbed)
+print(type(scrubbed))
+
+
+### Parse() test:
+
+item.parse(amazon_data)
 print(item.prompt)
+
 
