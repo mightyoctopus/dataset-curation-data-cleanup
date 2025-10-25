@@ -36,7 +36,7 @@ class Item:
 
     def __init__(self, data, price):
         self.title = data["title"]
-        self.price = data["price"]
+        self.price = float(price)
         self.token_count = 0
         self.include = False
         self.prompt = None
@@ -90,6 +90,7 @@ class Item:
             tokens = Item.tokenizer.encode(text, add_special_tokens=False)
             if len(tokens) > MIN_TOKENS:
                 tokens = tokens[:MAX_TOKENS]
+                text = Item.tokenizer.decode(tokens)
                 self.make_prompt(text)
                 self.include = True
 
@@ -99,6 +100,7 @@ class Item:
         """
         self.prompt = f"{self.QUESTION}\n\n{text}\n\n"
         self.prompt += f"{self.PREFIX}{str(round(self.price))}.00"
+
         self.token_count = len(Item.tokenizer.encode(self.prompt, add_special_tokens=False))
 
     def test_prompt(self):
@@ -120,30 +122,30 @@ class Item:
 ### Test ###
 ###===============================================================================###
 
-amazon_data = {
-    "title": "Dell Laptop 14 inches",
-    "price": 1400,
-    "description": ["The Dell Inspiron 14 offers a perfect balance between portability and performance. With its sleek aluminum design and ultra-slim profile, it’s ideal for both students and professionals. The 14-inch Full HD display delivers vibrant colors and crisp visuals for work, streaming, or browsing."],
-    "features": "Intel Core i5 12th Gen processor for fast multitasking 8GB DDR4 RAM and 512GB SSD for smooth, reliable performance, Backlit keyboard and fingerprint reader for convenience and security",
-    "details": "Product Dimensions: 12.7 x 8.6 x 0.7 inches, Item Weight: 3.08 pounds, Operating System: Windows 11 Home, Manufacturer: Dell"
-}
+# amazon_data = {
+#     "title": "Dell Laptop 14 inches",
+#     "price": 1400,
+#     "description": ["The Dell Inspiron 14 offers a perfect balance between portability and performance. With its sleek aluminum design and ultra-slim profile, it’s ideal for both students and professionals. The 14-inch Full HD display delivers vibrant colors and crisp visuals for work, streaming, or browsing."],
+#     "features": "Intel Core i5 12th Gen processor for fast multitasking 8GB DDR4 RAM and 512GB SSD for smooth, reliable performance, Backlit keyboard and fingerprint reader for convenience and security",
+#     "details": "Product Dimensions: 12.7 x 8.6 x 0.7 inches, Item Weight: 3.08 pounds, Operating System: Windows 11 Home, Manufacturer: Dell"
+# }
 
-item = Item(amazon_data, amazon_data)
+# item = Item(amazon_data, amazon_data)
 
-### Test if details are properly scrubbed:
-print(item.details) # Original Details
-print(item.scrub_details()) # Scrubbed details
-
-
-### Test the scrub() method:
-scrubbed = item.scrub("[,,,this is a great product that escalates the efficiency at work{}   ]")
-print(scrubbed)
-print(type(scrubbed))
+# ### Test if details are properly scrubbed:
+# print(item.details) # Original Details
+# print(item.scrub_details()) # Scrubbed details
 
 
-### Parse() test:
+# ### Test the scrub() method:
+# scrubbed = item.scrub("[,,,this is a great product that escalates the efficiency at work{}   ]")
+# print(scrubbed)
+# print(type(scrubbed))
 
-item.parse(amazon_data)
-print(item.prompt)
+
+# ### Parse() test:
+
+# item.parse(amazon_data)
+# print(item.prompt)
 
 
