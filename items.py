@@ -61,7 +61,7 @@ class Item:
         Also, remove words that are 7+ chars and contain numbers as there are likely
         irrelevant product numbers.
         """
-        stuff = re.sub(r"[:\[\]{}[] \s]", " ", stuff).strip()
+        stuff = re.sub(r"[:\[\]{}\s]", " ", stuff).strip()
         stuff = stuff.replace(" ,", ",").replace(",,,", ",").replace(",,", ",")
         words = stuff.split(" ")
         select = [word for word in words if len(word) < 7 or not any(char.isdigit() for char in word)]
@@ -132,4 +132,8 @@ amazon_data = {
 
 item = Item(amazon_data, amazon_data)
 
-print(item.make_prompt())
+# print(item)
+item.make_prompt("hahaha Manufacturer")
+
+print(item.prompt)
+
