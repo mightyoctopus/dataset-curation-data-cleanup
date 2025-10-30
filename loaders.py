@@ -53,7 +53,7 @@ class ItemLoader:
         for i in range(0, size, CHUNK_SIZE):
             yield self.dataset.select(range(i, min(i + CHUNK_SIZE, size)))
 
-    def load_in_parallel(self, workers):
+    def load_in_parallel(self, workers) -> List:
         """
         Use concurrent.futures to farm out the work to process chunks of datapoints -
         This speeds up processing significantly, but will tie up your computer while it's doing so!
@@ -72,14 +72,12 @@ class ItemLoader:
         return results
 
 
-    def load(self, workers=8):
+    def load(self, workers=8) -> List:
         """
         Load in this dataset; the workers parameter specifies how many processes
         should work on loading and scrubbing the data
         """
         start = datetime.now()
-
-        dataset_base_path = f"https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/resolve/main/raw_meta_{self.name}/"
 
         ### Find the appropriate data file names (for multiple dataset file names)
         files = helpers.find_data_structure(self.name)
