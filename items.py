@@ -1,3 +1,4 @@
+import random
 from typing import Optional
 from unicodedata import category
 
@@ -147,5 +148,3 @@ class Item:
 
 # item.parse(amazon_data)
 # print(item.prompt)
-
-
